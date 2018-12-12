@@ -3,43 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using ValidationStuff.Models;
 
 namespace ValidationStuff.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class RandomController : ControllerBase
     {
-        // GET api/values
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [HttpPost("animal")]
+        public IActionResult Post(Animal animal)
         {
-            return new string[] { "value1", "value2" };
+            if (animal.Sex != "M" && animal.Sex != "F")
+            {
+                var x = new ModelStateDictionary();
+                x.AddModelError("Sex","Must be 'M' or 'F'");
+
+                return BadRequest(x);
+            }
+
+            return Ok();
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("automobile")]
+        public void Post(Automobile automobile)
         {
         }
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
